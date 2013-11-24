@@ -11,7 +11,9 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Application\Service\UsuarioService;
+use Curso\Service\UsuarioService;
+//use Application\Service\UsuarioService;
+//use Curso\Service\UsuarioService;
 
 class IndexController extends AbstractActionController
 {
@@ -22,7 +24,14 @@ class IndexController extends AbstractActionController
     
     public function holaAction()
     {
-    	$usuario = new UsuarioService();	
+    	
+    	
+    	
+    	$usuario = $this->getServiceLocator()->get('Curso\Service\UsuarioService');
+    	//$usuario = new UsuarioService();
+    	$usuario->testDB();
+    	
+    	//$usuario = new UsuarioService();	
     	$usuario->setNombre("Jose Ruben");
     	$usuario->setApellidoPaterno("Rubio");
     	$usuario->setApellidoMaterno("Herrera");
