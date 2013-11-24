@@ -11,6 +11,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Application\Service\UsuarioService;
 
 class IndexController extends AbstractActionController
 {
@@ -21,6 +22,16 @@ class IndexController extends AbstractActionController
     
     public function holaAction()
     {
-    	return new ViewModel(array('nombre'=>utf8_encode('José Rubén')));
+    	$usuario = new UsuarioService();	
+    	$usuario->setNombre("Jose Ruben");
+    	$usuario->setApellidoPaterno("Rubio");
+    	$usuario->setApellidoMaterno("Herrera");
+    	
+    	echo get_class($usuario);
+    	    	
+    	$parametros['nombre'] = 'Jose Ruben Rubio Herrera';
+    	$parametros['objeto_usuario'] = $usuario;
+    	
+    	return new ViewModel($parametros);
     }
 }
