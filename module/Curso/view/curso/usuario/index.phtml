@@ -1,0 +1,38 @@
+<?php 
+if(isset($this->usuarios))
+{
+	?>
+	<div class="col-md-12">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Apellido paterno</th>
+					<th>Apellido materno</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php 
+				foreach($this->usuarios as $usuario)
+				{
+					?>
+					<tr>
+						<td><?php echo $usuario->getNombre(); ?></td>
+						<td><?php echo $usuario->getApellidoPaterno(); ?></td>
+						<td><?php echo $usuario->getApellidoMaterno(); ?></td>
+						<td>
+							<div class="btn-group">
+								<a href="usuario/edit/<?php echo $usuario->getId(); ?>" class="btn btn-default">Editar</a>
+							</div>
+						</td>
+					</tr>
+					<?php 
+				}
+				?>
+			</tbody>
+		</table>
+	</div>
+	<?php
+}
+?>

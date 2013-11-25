@@ -5,9 +5,11 @@ namespace Curso\Service;
 use Application\Service\UsuarioInterface;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
+use Zend\Db\ResultSet\ResultSet;
 
 class UsuarioService implements UsuarioInterface, ServiceManagerAwareInterface
 {
+	protected $id;
 	protected $nombre;
 	protected $apellidoPaterno;
 	protected $apellidoMaterno;
@@ -46,11 +48,57 @@ class UsuarioService implements UsuarioInterface, ServiceManagerAwareInterface
 		print_r($data);
 	}
 	
+	function loadById($user_id)
+	{
+		$adapter = $this->getServiceManager()->get('Zend\Db\Adapter\Adapter');
+		$result = $adapter->query("SELECT * FROM co_usuarios WHERE id = ?",array($user_id));
+		$data = $result->current();
+		if($data != null)
+		{
+			$this->hydrator($data);
+			return true;
+		}
+		return false;
+	}
+	
+	function hydrator($data)
+	{
+		$this->setNombre($data->nombre);
+		$this->setApellidoPaterno($data->paterno);
+		$this->setApellidoMaterno($data->materno);
+	}
+	
+	function find()
+	{
+		$adapter = $this->getServiceManager()->get('Zend\Db\Adapter\Adapter');
+		$result = $adapter->query("SELECT * FROM co_usuarios",array());
+		$resultSet = new ResultSet();
+		$resultSet->initialize($result);
+		$usuario = null;
+		$usuarios = array();
+		foreach($resultSet as $row)
+		{
+			$usuario = new UsuarioService();
+			$usuario->setId($row->id);
+			$usuario->setNombre($row->nombre);
+			$usuario->setApellidoPaterno($row->paterno);
+			$usuario->setApellidoMaterno($row->materno);
+			$usuarios[] = $usuario;
+			$usuario = null;
+		}
+		return $usuarios;
+	}
+	
 	/**
 	 * @return the $nombre
 	 */
 	public function getNombre() {
-		return $this->nombre.' '.$this->apellidoPaterno.' '.$this->apellidoMaterno;
+		return $this->nombre;
+	}
+	
+	public function getId()
+	{
+		return $this->id;
 	}
 
 	/**
@@ -65,6 +113,11 @@ class UsuarioService implements UsuarioInterface, ServiceManagerAwareInterface
 	 */
 	public function getApellidoMaterno() {
 		return $this->apellidoMaterno;
+	}
+	
+	public function setId($id)
+	{
+		$this->id = $id;
 	}
 
 	/**

@@ -19,6 +19,7 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+    	echo "Hola Mundo Estoy en ACTION INDEX";
         return new ViewModel();
     }
     
@@ -28,19 +29,20 @@ class IndexController extends AbstractActionController
     	
     	
     	$usuario = $this->getServiceLocator()->get('Curso\Service\UsuarioService');
-    	//$usuario = new UsuarioService();
-    	$usuario->testDB();
+    	//$usuario->testDB();
     	
     	//$usuario = new UsuarioService();	
     	$usuario->setNombre("Jose Ruben");
     	$usuario->setApellidoPaterno("Rubio");
     	$usuario->setApellidoMaterno("Herrera");
     	
+    	$usuario->loadById($this->params()->fromRoute()['id']);
+    	
     	echo get_class($usuario);
     	    	
     	$parametros['nombre'] = 'Jose Ruben Rubio Herrera';
     	$parametros['objeto_usuario'] = $usuario;
-    	
+    	    	
     	return new ViewModel($parametros);
     }
 }
