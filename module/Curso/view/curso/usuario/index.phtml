@@ -1,8 +1,12 @@
+<div class="col-md-12">
+    <h3>Usuarios</h3>
+    <div class="text-right">
+        <a href="/usuario/save" class="btn btn-success">Nuevo Usuario</a>
+    </div>
 <?php 
 if(isset($this->usuarios))
 {
 	?>
-	<div class="col-md-12">
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -23,7 +27,8 @@ if(isset($this->usuarios))
 						<td><?php echo $usuario->getApellidoMaterno(); ?></td>
 						<td>
 							<div class="btn-group">
-								<a href="usuario/edit/<?php echo $usuario->getId(); ?>" class="btn btn-default">Editar</a>
+								<a href="/usuario/edit/<?php echo $usuario->getId(); ?>" class="btn btn-default">Editar</a>
+                                <a href="/usuario/delete/<?php echo $usuario->getId(); ?>" class="btn btn-danger">Eliminar</a>
 							</div>
 						</td>
 					</tr>
@@ -32,7 +37,7 @@ if(isset($this->usuarios))
 				?>
 			</tbody>
 		</table>
-	</div>
 	<?php
 }
 ?>
+</div>

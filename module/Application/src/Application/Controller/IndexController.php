@@ -38,6 +38,10 @@ class IndexController extends AbstractActionController
     	
     	$usuario->loadById($this->params()->fromRoute()['id']);
     	
+    	
+    	
+    	$usuario->save();
+    	
     	echo get_class($usuario);
     	    	
     	$parametros['nombre'] = 'Jose Ruben Rubio Herrera';

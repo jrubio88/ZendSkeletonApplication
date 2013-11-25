@@ -6,6 +6,7 @@ use Application\Service\UsuarioInterface;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\RowGateway\RowGateway;
 
 class UsuarioService implements UsuarioInterface, ServiceManagerAwareInterface
 {
@@ -63,6 +64,7 @@ class UsuarioService implements UsuarioInterface, ServiceManagerAwareInterface
 	
 	function hydrator($data)
 	{
+		$this->setId($data->id);
 		$this->setNombre($data->nombre);
 		$this->setApellidoPaterno($data->paterno);
 		$this->setApellidoMaterno($data->materno);
@@ -87,6 +89,26 @@ class UsuarioService implements UsuarioInterface, ServiceManagerAwareInterface
 			$usuario = null;
 		}
 		return $usuarios;
+	}
+	
+	function save($datos)
+	{
+		$adapter = $this->getServiceManager()->get('Zend\Db\Adapter\Adapter');
+		$rowGateway = new RowGateway('id', 'co_usuarios', $adapter);
+		$rowGateway->populate($datos);
+		$rowGateway->save();
+	}
+	
+	function edit()
+	{
+		$adapter = $this->getServiceManager()->get('Zend\Db\Adapter\Adapter');
+		$rowGateway = new RowGateway('id', 'co_usuarios', $adapter);
+		$datos['id'] = $this->id;
+		$datos['nombre'] = $this->nombre;
+		$datos['paterno'] = $this->apellidoPaterno;
+		$datos['materno'] = $this->apellidoMaterno;
+		$rowGateway->populate($datos,array(true));
+		$rowGateway->save();
 	}
 	
 	/**
@@ -140,6 +162,23 @@ class UsuarioService implements UsuarioInterface, ServiceManagerAwareInterface
 	public function setApellidoMaterno($apellidoMaterno) {
 		$this->apellidoMaterno = $apellidoMaterno;
 	}
+	
+	
+	/* (non-PHPdoc)
+	 * @see \Zend\Db\RowGateway\RowGatewayInterface::delete()
+	 */
+	public function delete() 
+	{
+	    $adapter = $this->getServiceManager()->get('Zend\Db\Adapter\Adapter');
+        $rowGateway = new RowGateway('id', 'co_usuarios', $adapter);
+        $datos['id'] = $this->id;
+        $datos['nombre'] = $this->nombre;
+        $datos['paterno'] = $this->apellidoPaterno;
+        $datos['materno'] = $this->apellidoMaterno;
+        $rowGateway->populate($datos,array(true));
+        $rowGateway->delete();
+	}
+
 
 	
 	
