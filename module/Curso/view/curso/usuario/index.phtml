@@ -3,41 +3,41 @@
     <div class="text-right">
         <a href="/usuario/save" class="btn btn-success">Nuevo Usuario</a>
     </div>
-<?php 
-if(isset($this->usuarios))
-{
-	?>
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Apellido paterno</th>
-					<th>Apellido materno</th>
-					<th>Acciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php 
-				foreach($this->usuarios as $usuario)
-				{
-					?>
+	<?php 
+	if(isset($this->usuarios))
+	{
+		?>
+			<table class="table table-bordered">
+				<thead>
 					<tr>
-						<td><?php echo $usuario->getNombre(); ?></td>
-						<td><?php echo $usuario->getApellidoPaterno(); ?></td>
-						<td><?php echo $usuario->getApellidoMaterno(); ?></td>
-						<td>
-							<div class="btn-group">
-								<a href="/usuario/edit/<?php echo $usuario->getId(); ?>" class="btn btn-default">Editar</a>
-                                <a href="/usuario/delete/<?php echo $usuario->getId(); ?>" class="btn btn-danger">Eliminar</a>
-							</div>
-						</td>
+						<th>Nombre</th>
+						<th>Apellido paterno</th>
+						<th>Apellido materno</th>
+						<th>Acciones</th>
 					</tr>
+				</thead>
+				<tbody>
 					<?php 
-				}
-				?>
-			</tbody>
-		</table>
-	<?php
-}
-?>
+					foreach($this->usuarios as $usuario)
+					{
+						?>
+						<tr>
+							<td><?php echo $usuario['nombre']; ?></td>
+							<td><?php echo $usuario['paterno']; ?></td>
+							<td><?php echo $usuario['materno']; ?></td>
+							<td>
+								<div class="btn-group">
+									<a href="/usuario/edit/<?php echo $usuario['id']; ?>" class="btn btn-default">Editar</a>
+	                                <a onclick="if(confirm('Realmente desea eliminar el usuario <?php echo $usuario['nombre']; ?>')){ return true; }else{ return false; }" href="/usuario/delete/<?php echo $usuario['id']; ?>" class="btn btn-danger">Eliminar</a>
+								</div>
+							</td>
+						</tr>
+						<?php 
+					}
+					?>
+				</tbody>
+			</table>
+		<?php
+	}
+	?>
 </div>

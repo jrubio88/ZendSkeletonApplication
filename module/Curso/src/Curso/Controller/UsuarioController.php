@@ -12,13 +12,18 @@ namespace Curso\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+
 class UsuarioController extends AbstractActionController
 {
     var $Usuario;
+    const ROUTE_LOGIN = 'zfcuser/login';
     
-	
 	public function indexAction()
-    {
+    {	
+    	if(!$this->zfcUserAuthentication()->hasIdentity())
+    	{
+    		return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+    	}
     	$this->Usuario = $this->getServiceLocator()->get('Curso\Service\UsuarioService');
     	$usuarios = $this->Usuario->find();
     	$parametros['usuarios'] = $usuarios;

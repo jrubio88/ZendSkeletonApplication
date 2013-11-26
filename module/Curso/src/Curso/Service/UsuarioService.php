@@ -74,21 +74,8 @@ class UsuarioService implements UsuarioInterface, ServiceManagerAwareInterface
 	{
 		$adapter = $this->getServiceManager()->get('Zend\Db\Adapter\Adapter');
 		$result = $adapter->query("SELECT * FROM co_usuarios",array());
-		$resultSet = new ResultSet();
-		$resultSet->initialize($result);
-		$usuario = null;
-		$usuarios = array();
-		foreach($resultSet as $row)
-		{
-			$usuario = new UsuarioService();
-			$usuario->setId($row->id);
-			$usuario->setNombre($row->nombre);
-			$usuario->setApellidoPaterno($row->paterno);
-			$usuario->setApellidoMaterno($row->materno);
-			$usuarios[] = $usuario;
-			$usuario = null;
-		}
-		return $usuarios;
+		$result->toArray();
+		return $result;
 	}
 	
 	function save($datos)
@@ -172,9 +159,6 @@ class UsuarioService implements UsuarioInterface, ServiceManagerAwareInterface
 	    $adapter = $this->getServiceManager()->get('Zend\Db\Adapter\Adapter');
         $rowGateway = new RowGateway('id', 'co_usuarios', $adapter);
         $datos['id'] = $this->id;
-        $datos['nombre'] = $this->nombre;
-        $datos['paterno'] = $this->apellidoPaterno;
-        $datos['materno'] = $this->apellidoMaterno;
         $rowGateway->populate($datos,array(true));
         $rowGateway->delete();
 	}
